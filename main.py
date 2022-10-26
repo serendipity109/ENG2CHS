@@ -116,8 +116,8 @@ def translate_example():
 
 
 if __name__ == "__main__":
-    import os
-    os.environ['CUDA_VISIBLE_DEVICES'] = '2, 3'
+    # import os
+    # os.environ['CUDA_VISIBLE_DEVICES'] = '2, 3'
     import warnings
     warnings.filterwarnings('ignore')
     # run()
