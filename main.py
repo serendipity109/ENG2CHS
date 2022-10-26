@@ -1,3 +1,4 @@
+import argparse
 import utils
 import config
 import logging
@@ -11,6 +12,11 @@ from data_loader import MTDataset
 from utils import english_tokenizer_load
 from model import make_model, LabelSmoothing
 
+
+def get_parser():
+    parser = argparse.ArgumentParser(description='my description')
+    parser.add_argument('--input', default='I need to sleep.')
+    return parser
 
 class NoamOpt:
     """Optim wrapper that implements rate."""
@@ -106,19 +112,22 @@ def one_sentence_translate(sent, beam_search=True):
     translate(batch_input, model, use_beam=beam_search)
 
 
-def translate_example():
+def translate_example(inp=None):
     """单句翻译示例"""
-    sent = "The near-term policy remedies are clear: raise the minimum wage to a level that will keep a " \
-           "fully employed worker and his or her family out of poverty, and extend the earned-income tax credit " \
-           "to childless workers."
+    if inp:
+        sent = inp
+    else:
+        sent = "The near-term policy remedies are clear: raise the minimum wage to a level that will keep a " \
+               "fully employed worker and his or her family out of poverty, and extend the earned-income tax credit " \
+               "to childless workers."
     # tgt: 近期的政策对策很明确：把最低工资提升到足以一个全职工人及其家庭免于贫困的水平，扩大对无子女劳动者的工资所得税减免。
     one_sentence_translate(sent, beam_search=True)
 
 
 if __name__ == "__main__":
-    # import os
-    # os.environ['CUDA_VISIBLE_DEVICES'] = '2, 3'
     import warnings
     warnings.filterwarnings('ignore')
     # run()
-    translate_example()
+    parser = get_parser()
+    args = parser.parse_args()
+    translate_example(args.input)
